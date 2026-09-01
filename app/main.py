@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from prometheus_fastapi_instrumentator import Instrumentator
 from pydantic import BaseModel
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -21,6 +22,7 @@ Base.metadata.create_all(bind=engine)
 
 # --- API setup ---
 app = FastAPI(title="Todo API")
+Instrumentator().instrument(app).expose(app)
 
 class TodoCreate(BaseModel):
     title: str
